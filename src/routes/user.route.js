@@ -3,7 +3,7 @@ import userController from '../controllers/user.controller.js';
 import validId from '../middlewares/global.middlewares.js';
 import validUser from '../middlewares/global.middlewares.js';
 
-const router = express.Router()
+const router = express.Route()
 
 router.post('/', userController.create);
 router.get('/', userController.findAll);
