@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const userService = require('../services/user.service');
+import mongoose from 'mongoose';
+import userService from '../services/user.service.js';
 
 const validId = (req, res, next) => {
     try {
@@ -35,7 +35,7 @@ const validUser = (req, res, next) => {
     }
 }
 
-module.exports = {
+export default {
     validId,
     validUser
 };

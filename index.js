@@ -1,13 +1,13 @@
-const express = require('express');
+import express from 'express';
 const app = express()
-const connectDatabase = require('./src/database/db');
+import connectDatabase from'./src/database/db.js';
+import router from './src/routes/user.route.js';
 
-const userRoute = require('./src/routes/user.route');
 const port = 3000;
 
 connectDatabase();
 app.use(express.json());
-app.use('/user', userRoute);
+app.use('/user', router);
 
 
 app.listen(port, () => console.log(`Server is running on http://localhost:${port}`));
