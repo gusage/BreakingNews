@@ -1,7 +1,9 @@
 import express from 'express';
-import connectDatabase from './src/database/db.js';
-import router from './src/routes/user.route.js';
 import dotenv from 'dotenv';
+import connectDatabase from './src/database/db.js';
+
+import userRoute from './src/routes/user.route.js';
+import authRoute from './src/routes/auth.route.js';
 
 dotenv.config();
 
@@ -10,6 +12,7 @@ const app = express()
 
 connectDatabase();
 app.use(express.json());
-app.use('/user.js', router);
+app.use('/user.js', userRoute);
+app.use('/auth.js', authRoute);
 
 app.listen(port, () => console.log(`Server is running on http://localhost:${port}`));
