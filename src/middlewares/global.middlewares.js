@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import userService from '../services/user.service.js';
 
-const validId = (req, res, next) => {
+export const validId = (req, res, next) => {
     try {
         const id = req.params.id;
 
@@ -15,7 +15,7 @@ const validId = (req, res, next) => {
     }
 }
 
-const validUser = (req, res, next) => {
+export const validUser = (req, res, next) => {
     try {
         const id = req.params.id;
 
@@ -34,8 +34,3 @@ const validUser = (req, res, next) => {
         res.status(500).send({ message: error.message });
     }
 }
-
-export default {
-    validId,
-    validUser
-};
