@@ -23,9 +23,12 @@ const create = async (req, res) => {
     
 }
 
-const findAll = (req, res) => {
-    const news = [];
+const findAll = async (req, res) => {
+    const news = await findAllService();
+    if (news.length === 0) {
+        return res.status(404).send({ message: 'No news found.' });
+    }
     res.send(news);
 }
 
-export default { create, findAll };
+export { create, findAll };
