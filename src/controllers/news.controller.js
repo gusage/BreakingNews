@@ -1,10 +1,12 @@
-import { createService,
+import {
+    createService,
     findAllService,
     countNews,
     topNewsService,
     findByIdService,
     searchByTitleService,
     byUserService,
+    updateService,
 } from '../services/news.service.js';
 
 const create = async (req, res) => {
@@ -185,4 +187,28 @@ const byUser = async (req, res) => {
         res.status(500).send({ message: error.message });
     }
 }
-export { create, findAll, topNews, findById, searchByTitle, byUser };
+
+const update = async (req, res) => {
+    try {
+        const { title, content, bannerImage } = req.body;
+
+        const { id } = req.params;
+
+        if (!title && !content && !bannerImage) {
+            res.status(400).send({ message: 'At least one field is required to update.' });
+        }
+
+        const news = await updateService(id);
+
+        if (String(news.user._id) !== req.userId) {
+            return res.status(403).send({ message: 'You are not authorized to update this news.' });
+        }
+
+        await updateService(id, title, content, bannerImage);
+
+        return res.send({ message: 'News updated successfully.' });
+    } catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+}
+export { create, findAll, topNews, findById, searchByTitle, byUser, update };

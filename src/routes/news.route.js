@@ -7,6 +7,7 @@ import {
     findById,
     searchByTitle,
     byUser,
+    update,
 } from '../controllers/news.controller.js';
 
 const router = Router();
@@ -16,7 +17,7 @@ router.get('/', findAll)
 router.get('/top', topNews);
 router.get('/search', searchByTitle);
 router.get('/byUser', authMiddleware, byUser);
-
 router.get('/:id', findById);
+router.patch('/:id', authMiddleware, update)
 
 export default router;
