@@ -1,4 +1,11 @@
-import { createService, findAllService, countNews, topNewsService, findByIdService } from '../services/news.service.js';
+import { createService,
+    findAllService,
+    countNews,
+    topNewsService,
+    findByIdService,
+    searchByTitleService,
+    byUserService,
+} from '../services/news.service.js';
 
 const create = async (req, res) => {
 
@@ -106,7 +113,7 @@ const findById = async (req, res) => {
 
         const news = await findByIdService(id);
 
-        res.send({
+        return res.send({
             news: {
                 id: news._id,
                 title: news.title,
@@ -125,4 +132,57 @@ const findById = async (req, res) => {
     }
 }
 
-export { create, findAll, topNews, findById };
+const searchByTitle = async (req, res) => {
+    try {
+        const { title } = req.query;
+
+        const news = await searchByTitleService(title);
+
+        if (news.length === 0) {
+            return res.status(404).send({ message: 'No news found with the given title.' });
+        }
+
+        return res.send({
+            results: news.map((newsItem) => ({
+                id: newsItem._id,
+                title: newsItem.title,
+                content: newsItem.content,
+                bannerImage: newsItem.bannerImage,
+                createdAt: newsItem.createdAt,
+                likes: newsItem.likes,
+                comments: newsItem.comments,
+                userName: newsItem.user.name,
+                userAvatar: newsItem.user.avatar,
+            }))
+        })
+    }
+    catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+}
+
+const byUser = async (req, res) => {
+    try {
+        const id = req.userId;
+
+        const news = await byUserService(id);
+
+        return res.send({
+            results: news.map((newsItem) => ({
+                id: newsItem._id,
+                title: newsItem.title,
+                content: newsItem.content,
+                bannerImage: newsItem.bannerImage,
+                createdAt: newsItem.createdAt,
+                likes: newsItem.likes,
+                comments: newsItem.comments,
+                userName: newsItem.user.name,
+                userAvatar: newsItem.user.avatar,
+            }))
+        })
+    }
+    catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+}
+export { create, findAll, topNews, findById, searchByTitle, byUser };
