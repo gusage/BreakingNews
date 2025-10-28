@@ -1,3 +1,4 @@
+import { erase } from '../controllers/news.controller.js';
 import News from '../models/News.js';
 
 const createService = (body) => News.create(body);
@@ -16,4 +17,6 @@ const byUserService = (id) => News.find({ user: id }).sort({ _id: -1 }).populate
 
 const updateService = (id, title, content, bannerImage) => News.findOneAndUpdate({ _id: id }, { title, content, bannerImage }, rawResult = true);
 
-export { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService };
+const eraseService = (id) => News.findOneAndDelete({ _id: id });
+
+export { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService, eraseService };

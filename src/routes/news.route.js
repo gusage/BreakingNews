@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authMiddleware } from '../middlewares/auth.middleware.js';
-import { 
+import {
     create,
     findAll,
     topNews,
@@ -18,6 +18,7 @@ router.get('/top', topNews);
 router.get('/search', searchByTitle);
 router.get('/byUser', authMiddleware, byUser);
 router.get('/:id', findById);
-router.patch('/:id', authMiddleware, update)
+router.patch('/:id', authMiddleware, update);
+router.delete('/:id', authMiddleware, erase);
 
 export default router;

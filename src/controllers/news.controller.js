@@ -211,4 +211,23 @@ const update = async (req, res) => {
         res.status(500).send({ message: error.message });
     }
 }
-export { create, findAll, topNews, findById, searchByTitle, byUser, update };
+
+const erase = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const news = await findByIdService(id);
+
+        if (String(news.user._id) !== req.userId) {
+            return res.status(403).send({ message: 'You are not authorized to delete this news.' });
+        }
+
+        await eraseService(id);
+
+        return res.send({ message: 'News deleted successfully.' });
+    }
+    catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+}
+export { create, findAll, topNews, findById, searchByTitle, byUser, update, erase };
