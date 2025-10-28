@@ -7,6 +7,11 @@ import {
     searchByTitleService,
     byUserService,
     updateService,
+    eraseService,
+    likeNewsService,
+    deleteLikeNewsService,
+    addCommentService,
+    deleteCommentService
 } from '../services/news.service.js';
 
 const create = async (req, res) => {
@@ -230,4 +235,66 @@ const erase = async (req, res) => {
         res.status(500).send({ message: error.message });
     }
 }
-export { create, findAll, topNews, findById, searchByTitle, byUser, update, erase };
+
+const likeNews = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.userId;
+
+        const newsLiked = await likeNewsService(id, userId);
+
+        if (!newsLiked) {
+            await deleteLikeNewsService(id, userId);
+            return res.status(200).send({ message: 'Like removed successfully.' });
+        }
+        res.status(200).send({ message: 'News liked successfully.' });
+    }
+    catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+}
+
+const addComment = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.userId;
+        const { comment } = req.body;
+
+        if (!comment) {
+            return res.status(400).send({ message: 'Comment is required.' });
+        }
+
+        await addCommentService(id, userId, comment);
+
+        res.status(200).send({ message: 'Comment added successfully.' });
+    }
+    catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+}
+
+const deleteComment = async (req, res) => {
+    try {
+        const { idNews, idComment } = req.params;
+        const userId = req.userId;
+
+        await deleteCommentService(idNews, idComment, userId);
+
+        const commentFinder = commentDeleted.comments.find((comment) => comment.idComment === idComment);
+
+        if (!commentFinder) {
+            return res.status(404).send({ message: 'Comment not found.' });
+        }
+
+        if (commentFinder.userId !== userId) {
+            return res.status(403).send({ message: 'You are not authorized to delete this comment.' });
+        }
+
+        res.status(200).send({ message: 'Comment deleted successfully.' });
+    }
+    catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+}
+
+export { create, findAll, topNews, findById, searchByTitle, byUser, update, erase, likeNews, addComment, deleteComment };

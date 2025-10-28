@@ -1,4 +1,3 @@
-import { erase } from '../controllers/news.controller.js';
 import News from '../models/News.js';
 
 const createService = (body) => News.create(body);
@@ -19,4 +18,40 @@ const updateService = (id, title, content, bannerImage) => News.findOneAndUpdate
 
 const eraseService = (id) => News.findOneAndDelete({ _id: id });
 
-export { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService, eraseService };
+const likeNewsService = async (idNews, userId) => {
+    return News.findeOneAndUpdate(
+        { _id: idNews, 'likes.userId': { $nin: [userId] } }, { $push: { likes: userId, created: new Date() } })
+}
+
+const deleteLikeNewsService = async (idNews, userId) => {
+    return News.findOneAndUpdate(
+        { _id: idNews }, { $pull: { likes: userId } }
+    )
+}
+
+const addCommentService = async (idNews, comment, userId) => {
+    const idComment = Math.floor(Date.now() * Math.random()).toString(36);
+
+    return News.findOneAndUpdate({ _id: idNews }, { $push: { comments: { idComment, userId, comment, createdAt: new Date() } } });
+}
+
+const deleteCommentService = async (idNews, idComment, userId) => {
+    return News.findOneAndUpdate(
+        { _id: idNews }, { $pull: { comments: { idComment, userId } } }
+    )
+}
+export {
+    createService,
+    findAllService,
+    countNews,
+    topNewsService,
+    findByIdService,
+    searchByTitleService,
+    byUserService,
+    updateService,
+    eraseService,
+    likeNewsService,
+    deleteLikeNewsService,
+    addCommentService,
+    deleteCommentService
+};
