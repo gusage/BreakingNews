@@ -330,7 +330,7 @@
                             "application/json": {
                                 "schemma": {
                                     "type": "object",
-                                    "$ref": "#/components/schemas/Post"
+                                    "$ref": "#/components/schemas/News"
                                 }
                             }
                         }
@@ -420,7 +420,7 @@
                         "in": "path",
                         "name": "id",
                         "type": "string",
-                        "description": "Post ID",
+                        "description": "News ID",
                         "required": true
                     }
                 ],
@@ -499,7 +499,7 @@
                             "application/json": {
                                 "schemma": {
                                     "type": "object",
-                                    "$ref": "#/components/schemas/Post"
+                                    "$ref": "#/components/schemas/News"
                                 }
                             }
                         }
