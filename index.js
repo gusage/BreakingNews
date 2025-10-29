@@ -7,6 +7,8 @@ import authRoute from './src/routes/auth.route.js';
 
 import newsRoute from './src/routes/news.route.js';
 
+import swaggerRoute from './src/routes/swagger.router.js';
+
 dotenv.config();
 
 const port = process.env.PORT || 3000;
@@ -17,5 +19,6 @@ app.use(express.json());
 app.use('/user', userRoute);
 app.use('/auth', authRoute);
 app.use('/news', newsRoute);
+app.use('/docs', swaggerRoute);
 
 app.listen(port, () => console.log(`Server is running on http://localhost:${port}`));
