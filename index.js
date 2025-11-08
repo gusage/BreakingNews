@@ -9,12 +9,15 @@ import newsRoute from './src/routes/news.route.js';
 
 import swaggerRoute from './src/routes/swagger.router.js';
 
+import cors from 'cors'
+
 dotenv.config();
 
 const port = process.env.PORT || 3000;
 const app = express()
 
 connectDatabase();
+app.use(cors());
 app.use(express.json());
 app.use('/user', userRoute);
 app.use('/auth', authRoute);

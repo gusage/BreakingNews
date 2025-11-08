@@ -65,22 +65,26 @@ const findAll = async (req, res) => {
         if (news.length === 0) {
             return res.status(404).send({ message: 'No news found.' });
         }
+
+        news.shift();
+
         res.send({
             nextUrl,
             previousUrl,
             limit,
             offset,
             total,
-            results: news.map((newsItem) => ({
-                id: newsItem._id,
-                title: newsItem.title,
-                content: newsItem.content,
-                bannerImage: newsItem.bannerImage,
-                createdAt: newsItem.createdAt,
-                likes: newsItem.likes,
-                comments: newsItem.comments,
-                userName: newsItem.user.name,
-                userAvatar: newsItem.user.avatar,
+
+            results: news.map((news) => ({
+                id: news._id,
+                title: news.title,
+                content: news.content,
+                bannerImage: news.bannerImage,
+                createdAt: news.createdAt,
+                likes: news.likes,
+                comments: news.comments,
+                userName: news.user.name,
+                userAvatar: news.user.avatar,
             })),
         })
     } catch (error) {
